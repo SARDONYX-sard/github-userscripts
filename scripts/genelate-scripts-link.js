@@ -63,7 +63,8 @@
       }
     });
 
-    /** @typedef {{
+    /**
+     * @typedef {{
      *     name: string;
      *     path: string;
      *     sha: string;
@@ -89,16 +90,18 @@
       )
     ).json();
     const readmeMd = new TextDecoder().decode(base64ToBytes(readmeRes.content));
-    const forkLinkStart = "<!-- forked scripts -->\n";
-    const forkLinkEnd = "<!-- forked scripts end -->\n";
-    const forkLinksComment = new RegExp(`${forkLinkStart}*.${forkLinkEnd}`);
-    const myLinkStart = "<!-- original scripts -->\n";
-    const myLinkEnd = "<!-- original scripts end -->\n";
-    const myLinksComment = new RegExp(`${myLinkStart}*.${myLinkEnd}`);
+
+    const myLinkStart = "<!-- original scripts start -->";
+    const myLinkEnd = "<!-- original scripts end -->";
+    const myLinksComment = new RegExp(`<!-- original.*\n.*`);
+
+    const forkLinkStart = "<!-- forked scripts start -->";
+    const forkLinkEnd = "<!-- forked scripts end -->";
+    const forkLinksComment = new RegExp(`<!-- forked .*\n.*`);
 
     return readmeMd
-      .replace(myLinksComment, `${myLinkStart}${myLinksMd}${myLinkEnd}`)
-      .replace(forkLinksComment, `${forkLinkStart}${forkLinksMd}${forkLinkEnd}`)
+      .replace(myLinksComment, `${myLinkStart}\n${myLinksMd}${myLinkEnd}\n`)
+      .replace(forkLinksComment, `${forkLinkStart}\n${forkLinksMd}${forkLinkEnd}\n`)
       .trim();
   }
 
