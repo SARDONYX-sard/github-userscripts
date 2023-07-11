@@ -23,7 +23,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: node ./scripts/genelate-scripts-link.js > ./readme.md
       - name: commit files
-        if: steps.verify_diff.outputs.changed == 'true'
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
