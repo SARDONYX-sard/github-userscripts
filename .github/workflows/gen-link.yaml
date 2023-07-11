@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - run: node ./scripts/genelate-scripts-link.js > readme.md
+      - run: node ./scripts/genelate-scripts-link.js > ./readme.md
       - name: commit files
         if: steps.verify_diff.outputs.changed == 'true'
         run: |
