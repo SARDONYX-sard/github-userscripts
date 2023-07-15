@@ -15,7 +15,7 @@
 // @namespace   https://github.com/SARDONYX-sard
 // @run-at      document-idle
 // @updateURL   https://raw.githubusercontent.com/SARDONYX-sard/github-userscripts/main/src/github-oldest-button.user.js
-// @version     0.3.12
+// @version     0.3.13
 // ==/UserScript==
 
 // It has the following drawbacks
@@ -115,9 +115,8 @@
    *          default options: { canPress: true, url: current location }
    */
   const createButton = (name, { canPress = true, url = window.location.href }) => {
-    const isTargetUrl = window.location.href === url;
-    const element =
-      !canPress || isTargetUrl ? document.createElement("button") : document.createElement("a");
+    const hasTakeTarget = window.location.href === url;
+    const element = document.createElement(!canPress || hasTakeTarget ? "button" : "a");
     // common attributes
     element.classList.add("btn", "btn-outline", "BtnGroup-item");
     element.innerText = name;
