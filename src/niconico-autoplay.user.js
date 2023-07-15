@@ -14,7 +14,7 @@
 // @noframes
 // @run-at      document-idle
 // @updateURL   https://raw.githubusercontent.com/SARDONYX-sard/github-userscripts/main/src/niconico-autoplay.user.js
-// @version      0.0.1
+// @version      0.0.2
 // ==/UserScript==
 
 "use strict";
@@ -41,11 +41,10 @@
   };
 
   const clickPlay = () => {
-    /** @type {HTMLButtonElement|null} */
     const playBtn = document.querySelector(
       "#js-app > div > div.WatchAppContainer-main > div.MainContainer > div.MainContainer-player > div.PlayerContainer > div.ControllerBoxContainer > div.ControllerContainer > div > div:nth-child(1) > button.ActionButton.ControllerButton.PlayerPlayButton"
     );
-    if (playBtn) {
+    if (playBtn instanceof HTMLButtonElement) {
       log.info("[block blocker] 再生ボタンを自動クリックしました");
       playBtn.click();
     } else {
