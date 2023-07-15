@@ -2,13 +2,12 @@ name: Create script Links in Readme
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -22,7 +21,15 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: node ./scripts/genelate-scripts-link.js > ./readme.md
-      - name: commit files
+
+      # https://stackoverflow.com/questions/71362008/github-action-nothing-to-commit-working-tree-clean
+      - name: Check if there are any changes
+        id: verify_diff
+        run: |
+          git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Generate scripts link in readme.md
+        if: steps.verify_diff.outputs.changed == 'true'
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
