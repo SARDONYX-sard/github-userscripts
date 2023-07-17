@@ -5,7 +5,7 @@
 // @name         niconico auto play
 // @author       SARDONYX-sard
 // @description  niconico auto play script.
-// @downloadURL  https://raw.githubusercontent.com/SARDONYX-sard/github-userscripts/main/src/niconico-autoplay.user.js
+// @downloadURL  https://github.com/SARDONYX-sard/github-userscripts/raw/main/src/niconico-autoplay.user.js
 // @grant        none
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=nicovideo.jp
 // @license      Unlicense
@@ -13,11 +13,11 @@
 // @namespace    https://github.com/SARDONYX-sard
 // @noframes
 // @run-at       document-idle
-// @updateURL    https://raw.githubusercontent.com/SARDONYX-sard/github-userscripts/main/src/niconico-autoplay.user.js
+// @updateURL    https://github.com/SARDONYX-sard/github-userscripts/raw/main/src/niconico-autoplay.user.js
 // @version      0.0.3
 // ==/UserScript==
 
-"use strict";
+https: "use strict";
 (() => {
   // config
   /** @type {"debug"|"info"|"warn"|"error"} */
