@@ -2,19 +2,19 @@
 
 // See: https://www.bugbugnow.net/2021/02/user-script.html
 // ==UserScript==
+// @name         niconico auto play
 // @author       SARDONYX-sard
 // @description  niconico auto play script.
-// @downloadURL   https://raw.githubusercontent.com/SARDONYX-sard/github-userscripts/main/src/niconico-autoplay.user.js
+// @downloadURL  https://raw.githubusercontent.com/SARDONYX-sard/github-userscripts/main/src/niconico-autoplay.user.js
 // @grant        none
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=nicovideo.jp
-// @license      Unlisence
+// @license      Unlicense
 // @match        https://*.nicovideo.jp/watch/*
-// @name         niconico auto play
-// @namespace   https://github.com/SARDONYX-sard
+// @namespace    https://github.com/SARDONYX-sard
 // @noframes
-// @run-at      document-idle
-// @updateURL   https://raw.githubusercontent.com/SARDONYX-sard/github-userscripts/main/src/niconico-autoplay.user.js
-// @version      0.0.2
+// @run-at       document-idle
+// @updateURL    https://raw.githubusercontent.com/SARDONYX-sard/github-userscripts/main/src/niconico-autoplay.user.js
+// @version      0.0.3
 // ==/UserScript==
 
 "use strict";

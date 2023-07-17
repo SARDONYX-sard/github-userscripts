@@ -4,19 +4,19 @@
 
 // See: https://www.bugbugnow.net/2021/02/user-script.html
 // ==UserScript==
+// @name        Youtube Block adblock blocker
 // @author      SARDONYX-sard
 // @description Prevent Youtube from detecting adblock and stopping playback.
 // @downloadURL https://raw.githubusercontent.com/SARDONYX-sard/github-userscripts/main/src/youtube-block-adblock-blocker.user.js
 // @grant       none
 // @icon        https://www.google.com/s2/favicons?sz=64&domain=youtube.com
-// @license     Unlisence
+// @license     Unlicense
 // @match       https://*.youtube.com/watch*
-// @name        Youtube Block adblock blocker
 // @namespace   https://github.com/SARDONYX-sard
 // @noframes
 // @run-at      document-idle
 // @updateURL   https://raw.githubusercontent.com/SARDONYX-sard/github-userscripts/main/src/youtube-block-adblock-blocker.user.js
-// @version     0.1.7
+// @version     0.1.8
 // ==/UserScript==
 
 "use strict";

@@ -14,6 +14,7 @@
  */
 
 // ==UserScript==
+// @name        GitHub in VSCode
 // @author      SARDONYX-sard
 // @connect     github.com
 // @connect     githubusercontent.com
@@ -22,11 +23,10 @@
 // @icon        https://github.githubassets.com/pinned-octocat.svg
 // @license     MIT
 // @match       https://github.com/*
-// @name        GitHub in VSCode
 // @namespace   https://github.com/SARDONYX-sard
 // @run-at      document-idle
 // @updateURL   https://raw.githubusercontent.com/SARDONYX-sard/github-userscripts/main/fork/github-in-vscode.user.js
-// @version     0.1.5
+// @version     0.1.6
 // ==/UserScript==
 
 (async () => {

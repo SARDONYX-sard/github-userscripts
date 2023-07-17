@@ -1,18 +1,18 @@
 // @ts-check
 
 // ==UserScript==
+// @name        Prevent translate code
 // @author      SARDONYX-sard
 // @description Prevent translate code.
 // @downloadURL https://raw.githubusercontent.com/SARDONYX-sard/github-userscripts/main/src/prevent-translate-code.user.js
 // @grant       none
 // @icon        https://github.githubassets.com/pinned-octocat.svg
-// @license     Unlisence
+// @license     Unlicense
 // @match       http://*/*
-// @name        Prevent translate code
 // @namespace   https://github.com/SARDONYX-sard
 // @run-at      document-idle
 // @updateURL   https://raw.githubusercontent.com/SARDONYX-sard/github-userscripts/main/src/prevent-translate-code.user.js
-// @version     0.0.1
+// @version     0.0.2
 // ==/UserScript==
 
 (function () {

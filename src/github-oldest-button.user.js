@@ -4,18 +4,18 @@
 // - https://wiki.greasespot.net/Metadata_Block
 
 // ==UserScript==
+// @name        Add GitHub Oldest/Newest Button(GitHub API Version)
 // @author      SARDONYX-sard
 // @description Add github more buttons.
 // @downloadURL https://raw.githubusercontent.com/SARDONYX-sard/github-userscripts/main/src/github-oldest-button.user.js
 // @grant       none
 // @icon        https://github.githubassets.com/pinned-octocat.svg
-// @lisence     Unlisence
+// @liccnse     Unlicense
 // @match       https://github.com/*/*
-// @name        Add GitHub Oldest/Newest Button(GitHub API Version)
 // @namespace   https://github.com/SARDONYX-sard
 // @run-at      document-idle
 // @updateURL   https://raw.githubusercontent.com/SARDONYX-sard/github-userscripts/main/src/github-oldest-button.user.js
-// @version     0.3.13
+// @version     0.3.14
 // ==/UserScript==
 
 // It has the following drawbacks
