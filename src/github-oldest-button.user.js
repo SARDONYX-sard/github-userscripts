@@ -10,7 +10,7 @@
 // @downloadURL https://raw.githubusercontent.com/SARDONYX-sard/github-userscripts/main/src/github-oldest-button.user.js
 // @grant       none
 // @icon        https://github.githubassets.com/pinned-octocat.svg
-// @liccnse     Unlicense
+// @license     Unlicense
 // @match       https://github.com/*/*
 // @namespace   https://github.com/SARDONYX-sard
 // @run-at      document-idle
