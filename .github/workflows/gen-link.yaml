@@ -16,8 +16,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.head_ref }}
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
@@ -26,20 +24,23 @@ jobs:
       - name: Generate scripts link in readme.md
         run: node ./scripts/genelate-scripts-link.js > ./readme.md
 
-      # https://zenn.dev/snowcait/articles/903d86d668fcb7
+      # https://stackoverflow.com/questions/71362008/github-action-nothing-to-commit-working-tree-clean
       - name: Check if there are any changes
         id: verify_diff
         run: |
-          git add -N .
-          git diff --name-only --exit-code
-        continue-on-error: true
+          git diff --quiet . || echo "changed=true" >> $GITHUB_OUTPUT
 
       - name: Commit
+        if: steps.verify_diff.outputs.changed == 'true'
         run: |
-          set -x
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git add readme.md
           git commit -m 'docs(script-links): update script links in readme.md'
-          git push
-        if: steps.diff.outcome == 'failure'
+
+      - name: Push
+        if: steps.verify_diff.outputs.changed == 'true'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
