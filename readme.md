@@ -12,9 +12,6 @@ Basically works, no liability guarantee, and copyright disclaimer license (follo
 - [youtube-block-adblock-blocker](https://github.com/SARDONYX-sard/github-userscripts/raw/main/src/youtube-block-adblock-blocker.user.js)
 <!-- original scripts end -->
 
-
-
-
 ## Forked scripts
 
 Follow the original license.
