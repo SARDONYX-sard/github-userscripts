@@ -10,7 +10,8 @@
 // @namespace   https://github.com/SARDONYX-sard
 // @run-at      document-idle
 // @updateURL   https://raw.githubusercontent.com/SARDONYX-sard/github-userscripts/main/src/github-cargo-docs.user.js
-// @version     0.0.1
+// @version     0.0.2
+// @require     https://raw.githubusercontent.com/Gin-Quin/fast-toml/master/dist/browser/fast-toml.js
 // ==/UserScript==
 
 (async () => {
@@ -47,7 +48,7 @@
     if (toml == null) {
       throw new Error("toml data not found");
     }
-    const parsedToml = parseToml(toml);
+    const parsedToml = TOML.parse(toml);
     if (!parsedToml.dependencies) {
       return;
     }
@@ -71,122 +72,16 @@
         document.getElementById("cargo-doc")?.append(await createDocsLink(lib_name, value));
       }
     }
-  }
-
-  function debugParseToml() {
-    const toml_data = `[package]
-name = "ras"
-version = "0.1.0"
-edition = "2021"
-authors = ["SARDONYX"]
-description = "A small assembler."
-license = "MIT OR Apache-2.0"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
-byteorder = "1.4.3"
-clap = { version = "4.3.1", features = ["derive"] }
-once_cell = "1.18.0"
-seq-macro = "0.3.5"
-
-[dev-dependencies]
-pretty_assertions = "1.3.0"`;
-    console.debug(parseToml(toml_data));
-  }
-
-  /**
-   * Parse a TOML-formatted string and convert it to an object.
-   *
-   * @param {string} toml_data - The TOML-formatted string.
-   * @returns {Object.<string, (Object|Array|string|number|boolean)>} - The object representing TOML data.
-   */
-  function parseToml(toml_data) {
-    const tomlObject = {};
-    let currentTable = null;
-
-    const lines = toml_data.split("\n");
-
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i].trim();
-
-      // Detect sections
-      const sectionMatch = /^\[([^\]]+)\]$/.exec(line);
-      if (sectionMatch) {
-        currentTable = sectionMatch[1];
-        tomlObject[currentTable] = {};
-        continue;
+    for (const lib_name of Object.keys(parsedToml["dev-dependencies"])) {
+      const value = parsedToml["dev-dependencies"][lib_name];
+      if (typeof value === "object") {
+        const version = value.version;
+        // lib_name = { version = "0.1.0" }
+        document.getElementById("cargo-doc")?.append(await createDocsLink(lib_name, version));
+      } else {
+        // lib_name = "0.1.0"
+        document.getElementById("cargo-doc")?.append(await createDocsLink(lib_name, value));
       }
-
-      // Detect keys and values
-      const keyValueMatch = /([\w|-]+)\s*=\s*(.+)/.exec(line);
-      if (keyValueMatch && currentTable) {
-        const key = keyValueMatch[1];
-        const value = keyValueMatch[2].trim();
-        tomlObject[currentTable][key] = parseValue(value);
-      }
-    }
-
-    return tomlObject;
-  }
-
-  /**
-   * Parse a TOML-formatted value into an appropriate JavaScript data type.
-   *
-   * @param {string} value - The TOML-formatted value.
-   * @returns {(Object|Array|string|number|boolean)} - The parsed JavaScript data.
-   */
-  function parseValue(value) {
-    /**
-     * @param{string} value
-     * @returns {Object.<string, (Object|Array|string|number|boolean)>} - パースされたJavaScriptオブジェクト
-     */
-    const parseTomlValue = (value) => {
-      const cleanedValue = value.slice(1, -1).trim();
-      const keyValuePairs = cleanedValue.split(",").map((pair) => pair.trim());
-      const parsedObject = {};
-
-      for (const keyValuePair of keyValuePairs) {
-        const [key, rawValue] = keyValuePair.split("=").map((item) => item.trim());
-        parsedObject[key] = parseValue(rawValue);
-      }
-
-      return parsedObject;
-    };
-
-    /**
-     * Parse a TOML-formatted array into a JavaScript array.
-     *
-     * @param {string} value - The TOML-formatted array.
-     * @returns {Array.<(|Array|string|number|boolean)>} - The parsed JavaScript array.
-     */
-    const parseArray = (value) => {
-      const cleanedValue = value.slice(1, -1).trim();
-      const elements = cleanedValue.split(",").map((item) => parseValue(item.trim()));
-      return elements;
-    };
-
-    /**
-     * @param{string} value
-     */
-    const parseBool = (value) => {
-      return value === "true";
-    };
-
-    if (value.startsWith("{") && value.endsWith("}")) {
-      return parseTomlValue(value);
-    } else if (value.startsWith("[") && value.endsWith("]")) {
-      return parseArray(value);
-    } else if (value === "true" || value === "false") {
-      return parseBool(value);
-    } else if (!isNaN(parseFloat(value))) {
-      return parseFloat(value);
-    } else if (value.startsWith('"') && value.endsWith('"')) {
-      return value.slice(1, -1);
-    } else if (value.startsWith("'") && value.endsWith("'")) {
-      return value.slice(1, -1);
-    } else {
-      return value;
     }
   }
 
