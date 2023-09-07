@@ -17,36 +17,26 @@
 (async () => {
   // https://stackoverflow.com/questions/3522090/event-when-window-location-href-changes
   // Guard to detect DOM changes on all GitHub.com repo domains to prevent SPA, but only do the actual processing of commits history.
-  const observeUrlChange = () => {
-    let oldHref = document.location.href;
-    const body = document.querySelector("body");
-    const observer = new MutationObserver(async (mutations) => {
-      if (oldHref !== document.location.href) {
-        oldHref = document.location.href;
-        if (!document.location.pathname.endsWith("Cargo.toml")) {
-          document.getElementById("cargo-doc")?.remove();
-          return;
-        }
-        // Delay prevents the previous DOM from being returned if the DOM is not drawn in time.
-        setTimeout(async () => {
-          await githubCargoDocs();
-        }, 3000);
+  let isCalled = false;
+  const observer = new MutationObserver(async (mutations) => {
+    if (!document.location.pathname.match(/Cargo.toml$/)) {
+      document.getElementById("cargo-doc")?.remove();
+      isCalled = false;
+      return;
+    }
+    setTimeout(async () => {
+      if (!isCalled) {
+        isCalled = true;
+        await githubCargoDocs();
       }
-    });
-    observer.observe(body, { childList: true, subtree: true });
-  };
-  window.onload = observeUrlChange;
-
-  if (!window.location.pathname.endsWith("Cargo.toml")) {
-    document.getElementById("cargo-doc")?.remove();
-    return;
-  }
-  githubCargoDocs();
+    }, 1000);
+  });
+  observer.observe(document, { childList: true, subtree: true });
 
   async function githubCargoDocs() {
     const toml = document.getElementById("read-only-cursor-text-area")?.textContent;
     if (toml == null) {
-      throw new Error("toml data not found");
+      return;
     }
     const parsedToml = TOML.parse(toml);
     if (!parsedToml.dependencies) {
