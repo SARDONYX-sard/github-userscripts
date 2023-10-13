@@ -1,5 +1,3 @@
-/** Deprecated: This is probably no longer needed as the script is for temporary measures. */
-
 // @ts-check
 
 // See: https://www.bugbugnow.net/2021/02/user-script.html
@@ -16,7 +14,7 @@
 // @noframes
 // @run-at      document-idle
 // @updateURL   https://raw.githubusercontent.com/SARDONYX-sard/github-userscripts/main/src/youtube-block-adblock-blocker.user.js
-// @version     0.1.8
+// @version     0.1.9
 // ==/UserScript==
 
 "use strict";
@@ -26,6 +24,7 @@
   const DEBUG_MODE = "debug";
   const INTERVAL_TIME = 1000;
   const CLEAR_INTERVAL_TIME = 10000;
+  const PLAY_BUTTON_NAME = "再生"; // jp: "再生", en: "play"
 
   const log = {
     debug: (...msg) => {
@@ -82,7 +81,7 @@
     log.info("[Youtube block blocker] Start to remove popup & click play button.");
     const intervalId = setInterval(() => {
       removePopup();
-      clickPlay();
+      clickPlay(PLAY_BUTTON_NAME);
     }, INTERVAL_TIME);
 
     setTimeout(() => {
