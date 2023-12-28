@@ -1,3 +1,5 @@
+//@ts-check
+
 // ==UserScript==
 // @name        Generate Cargo.toml dependencies link
 // @author      SARDONYX-sard
@@ -10,7 +12,7 @@
 // @namespace   https://github.com/SARDONYX-sard
 // @run-at      document-idle
 // @updateURL   https://raw.githubusercontent.com/SARDONYX-sard/github-userscripts/main/src/github-cargo-docs.user.js
-// @version     0.0.2
+// @version     0.0.3
 // @require     https://raw.githubusercontent.com/Gin-Quin/fast-toml/master/dist/browser/fast-toml.js
 // ==/UserScript==
 
@@ -29,12 +31,13 @@
         isCalled = true;
         await githubCargoDocs();
       }
-    }, 1000);
+    }, 2000);
   });
   observer.observe(document, { childList: true, subtree: true });
 
   async function githubCargoDocs() {
-    const toml = document.getElementById("read-only-cursor-text-area")?.textContent;
+    const target = document.getElementById("read-only-cursor-text-area");
+    const toml = target?.textContent;
     if (toml == null) {
       return;
     }
@@ -46,9 +49,10 @@
     const div = document.createElement("div");
     div.id = "cargo-doc";
     // Directly below the text of Cargo.toml
-    const targetNode = document.querySelector(
-      "#repo-content-pjax-container > react-app > div > div > div > div > div > main > div > div > div:nth-child(3)"
-    );
+    const targetNode = document.querySelector(`section[aria-labelledby="file-name-id-wide file-name-id-mobile"]`);
+    if (!targetNode) {
+      throw new Error("Not found target Node.");
+    }
     targetNode?.append(div);
 
     for (const lib_name of Object.keys(parsedToml.dependencies)) {
