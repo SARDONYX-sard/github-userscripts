@@ -7,7 +7,7 @@
  * Copyright (c) 2022 Rob Garrison
  *
  * - Original code meta info
- * @version     0.1.4
+ * @version     0.1.5
  * @supportURL  https://github.com/Mottie/GitHub-userscripts/issues
  * @updateURL   https://raw.githubusercontent.com/Mottie/GitHub-userscripts/master/github-in-vscode.user.js
  * @downloadURL https://raw.githubusercontent.com/Mottie/GitHub-userscripts/master/github-in-vscode.user.js
@@ -82,9 +82,8 @@
 
   function setVSCodeLink() {
     console.log("set VSIcon called");
-    const vsLink =
-      document.getElementById("github-in-vscode") ?? document.querySelector(".ghiv-link");
-    const goToFile = document.querySelector("a[data-hotkey='t']");
+    const vsLink = document.getElementById("github-in-vscode") ?? document.querySelector(".ghiv-link");
+    const goToFile = document.getElementById(":r5:");
     if (vsLink || !goToFile) {
       return;
     }
