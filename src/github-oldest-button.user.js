@@ -15,7 +15,7 @@
 // @namespace   https://github.com/SARDONYX-sard
 // @run-at      document-idle
 // @updateURL   https://raw.githubusercontent.com/SARDONYX-sard/github-userscripts/main/src/github-oldest-button.user.js
-// @version     0.3.14
+// @version     0.4.0
 // ==/UserScript==
 
 // It has the following drawbacks
@@ -202,9 +202,7 @@
     };
 
     isDebug &&
-      console.info(
-        "[GitHub Button script] Trying to get the URL of the oldest commit using the GitHub API..."
-      );
+      console.info("[GitHub Button script] Trying to get the URL of the oldest commit using the GitHub API...");
     if (!useApi) return null;
     const baseUrl = `https://api.github.com/repos/${repo}/commits`;
 
@@ -231,16 +229,12 @@
     isDebugMode && console.info("[GitHub Button script] Called main function by MutationObserver.");
 
     const btnGroup = (() => {
-      const baseSelector = "#repo-content-pjax-container > div > div.paginate-container > div";
-      const baseSelector2 = "#repo-content-turbo-frame > div > div.paginate-container > div";
-      const btnGroup =
-        document.querySelector(baseSelector) ?? document.querySelector(baseSelector2);
-
+      const btnGroup = document.querySelector("main > div > div > div:last-child");
       !btnGroup && console.error("Failed to get btn Group.");
       return btnGroup;
     })();
     if (!btnGroup) return;
-    const newestElm = btnGroup.querySelector("div > :nth-child(1)");
+    const newestElm = btnGroup.querySelector("div > :first-child");
     const oldestElm = btnGroup.querySelector("div > :nth-child(4)");
     const isSetNewestElm = newestElm?.textContent === "Newest";
     const isSetOldestElm = /Oldest|Failed/.test(oldestElm?.textContent ?? "");
@@ -265,18 +259,10 @@
       return;
     }
     //! RegExpMatchArray says it returns a string, but destructuring assignments can be undefined.
-    const [, repo, branch] = /** @type {[never, string|undefined, string|undefined]} */ (
-      currentUrlPathArray
-    );
+    const [, repo, branch_] = /** @type {[never, string|undefined, string|undefined]} */ (currentUrlPathArray);
+    const branch = branch_?.endsWith("/") ? branch_.replace(/\/$/, "") : branch_;
     if (!(repo && branch)) {
-      console.error(
-        `This occurs when no branch name is specified.
-  Also, filters using custom queries such as author=<name> in the query are currently unsupported.
-
-  It may be possible to retrieve it by using the following URL
-              <any repo name>/commits/<branch name>
-  e.g.: github.com/SARDONYX-sard/SARDONYX-sard/commits/main`
-      );
+      console.error("No support manual query");
       return;
     }
 
