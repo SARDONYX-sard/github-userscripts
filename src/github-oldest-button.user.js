@@ -11,7 +11,7 @@
 // @namespace   https://github.com/SARDONYX-sard
 // @run-at      document-idle
 // @updateURL   https://raw.githubusercontent.com/SARDONYX-sard/github-userscripts/main/src/github-oldest-button.user.js
-// @version     1.0.2
+// @version     1.0.3
 // ==/UserScript==
 
 // ref
@@ -64,7 +64,7 @@
     const $paginationButtons = document.querySelector('main div[class^="ButtonGroup-"]');
 
     if (!$paginationButtons) {
-      throw new Error("Not found pagination buttons");
+      return log.info("Not found pagination buttons.It's probably in the middle of a DOM rendering update.");
     }
 
     const $newer = $paginationButtons.querySelector('a[data-testid="pagination-prev-button"]');
