@@ -12,7 +12,7 @@
 // @namespace   https://github.com/SARDONYX-sard
 // @run-at      document-idle
 // @updateURL   https://raw.githubusercontent.com/SARDONYX-sard/github-userscripts/main/src/github-cargo-docs.user.js
-// @version     0.0.3
+// @version     0.1.0
 // @require     https://raw.githubusercontent.com/Gin-Quin/fast-toml/master/dist/browser/fast-toml.js
 // ==/UserScript==
 
@@ -41,8 +41,13 @@
     if (toml == null) {
       return;
     }
+    // @ts-ignore
     const parsedToml = TOML.parse(toml);
-    if (!parsedToml.dependencies) {
+    alert(JSON.stringify(parsedToml));
+
+    const depsKeys = ["build-dependencies", "dev-dependencies", "dependencies", "workspace.dependencies"];
+    const hasDepsKey = depsKeys.some((key) => key in parsedToml);
+    if (!hasDepsKey) {
       return;
     }
 
@@ -55,26 +60,42 @@
     }
     targetNode?.append(div);
 
-    for (const lib_name of Object.keys(parsedToml.dependencies)) {
-      const value = parsedToml.dependencies[lib_name];
-      if (typeof value === "object") {
-        const version = value.version;
-        // lib_name = { version = "0.1.0" }
-        document.getElementById("cargo-doc")?.append(await createDocsLink(lib_name, version));
-      } else {
-        // lib_name = "0.1.0"
-        document.getElementById("cargo-doc")?.append(await createDocsLink(lib_name, value));
+    addDocLink(parsedToml, depsKeys);
+  }
+
+  /**
+   *
+   * @param {{}} parsedToml
+   * @param {string[]} fields - e.g. ['dev-dependencies', 'dependencies', 'workspace.dependencies']
+   */
+  async function addDocLink(parsedToml, fields) {
+    const docElm = document.getElementById("cargo-doc");
+
+    for (const field of fields) {
+      /** @type {{}|null} */
+      let current = parsedToml;
+      const pathParts = field.split(".");
+      for (const part of pathParts) {
+        if (current && current[part]) {
+          current = current[part];
+        } else {
+          current = null;
+          break;
+        }
       }
-    }
-    for (const lib_name of Object.keys(parsedToml["dev-dependencies"])) {
-      const value = parsedToml["dev-dependencies"][lib_name];
-      if (typeof value === "object") {
-        const version = value.version;
-        // lib_name = { version = "0.1.0" }
-        document.getElementById("cargo-doc")?.append(await createDocsLink(lib_name, version));
-      } else {
-        // lib_name = "0.1.0"
-        document.getElementById("cargo-doc")?.append(await createDocsLink(lib_name, value));
+
+      if (current) {
+        for (const lib_name of Object.keys(current)) {
+          const value = current[lib_name];
+          if (typeof value === "object") {
+            const version = value.version;
+            // lib_name = { version = "0.1.0" }
+            docElm?.append(await createDocsLink(lib_name, version));
+          } else {
+            // lib_name = "0.1.0"
+            docElm?.append(await createDocsLink(lib_name, value));
+          }
+        }
       }
     }
   }
