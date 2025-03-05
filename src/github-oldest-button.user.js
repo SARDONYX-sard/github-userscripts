@@ -11,7 +11,7 @@
 // @namespace   https://github.com/SARDONYX-sard
 // @run-at      document-idle
 // @updateURL   https://raw.githubusercontent.com/SARDONYX-sard/github-userscripts/main/src/github-oldest-button.user.js
-// @version     1.0.3
+// @version     1.0.4
 // ==/UserScript==
 
 // ref
@@ -23,7 +23,7 @@
   /** - Cache expiration time: 1Day(60sec * 60min * 24h) */
   const EXPIRES = 60 * 60 * 24;
   /** @type {"trace"|"debug"|"info"|"warn"|"error"} */
-  const LOG_LEVEL = "error";
+  const LOG_LEVEL = "trace";
 
   /** For debug */
   const USE_GITHUB_API = true;
@@ -61,14 +61,13 @@
       previousUrl = window.location.href;
     }
 
-    const $paginationButtons = document.querySelector('main div[class^="ButtonGroup-"]');
-
+    const $newer = document.querySelector('a[data-testid="pagination-next-button"]');
+    const $paginationButtons = $newer?.parentElement?.parentElement;
     if (!$paginationButtons) {
       return log.info("Not found pagination buttons.It's probably in the middle of a DOM rendering update.");
     }
 
-    const $newer = $paginationButtons.querySelector('a[data-testid="pagination-prev-button"]');
-    const $older = $paginationButtons.querySelector('a[data-testid="pagination-next-button"]');
+    const $older = $paginationButtons.querySelector('a[data-testid="pagination-prev-button"]');
     if (!($older && $newer)) {
       throw new Error("next or prev button is required");
     }
@@ -109,7 +108,7 @@
       log.error(error);
       throw new Error(error);
     }
-    editButton("Failed", $oldestButton);
+    editButton("Reload", $oldestButton);
   }
 
   /**
@@ -140,7 +139,7 @@
   }
 
   /**
-   * @param {"Newest"|"Oldest"} name
+   * @param {"Newest"|"Oldest"|"Loading..."} name
    * @param {Element} base - Clone target element
    * @param {{url?: string}} options
    * @throws `Error`
